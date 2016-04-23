@@ -1,14 +1,12 @@
 'use strict';
 
-chrome.runtime.onInstalled.addListener(details => {
-  console.log('previousVersion', details.previousVersion);
-});
+
+// Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener((tab) => {
-  chrome.tabs.executeScript(null, {file: 'jquery.min.js'}, () => {
-    console.log('\'Allo \'Jquery loaded');
-    chrome.tabs.executeScript(null, {file: 'background.js'}, ()=>{
-      console.log('\'Allo \'Jquery loaded');
-    });
+  // Send a message to the active tab
+  console.log('browser extrension action clicked');
+  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+    var activeTab = tabs[0];
+    chrome.tabs.sendMessage(activeTab.id, {'message': 'clicked_browser_action'});
   });
 });
-console.log('\'Allo \'Allo! Event Page');
