@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Mockup Overlay React",
+  "description": "Mockup overlay react",
+  "version": "0.0.0.1",
+  "background": {
+    "scripts": [
+      "event.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_title": "Mockup Overlay",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "css": [],
+      "js": ["content.js"]
+    }
+  ]
+}
