@@ -25,6 +25,8 @@
       ],
       "js": [
         "scripts/jquery.js",
+        "scripts/jquery-ui.min.js",
+        "scripts/jquery.ui.touch-punch.min.js",
         "scripts/popup.js",
         "scripts/content.js"
       ]

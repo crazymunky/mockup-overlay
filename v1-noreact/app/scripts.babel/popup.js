@@ -15,14 +15,27 @@ class Popup {
       inputOpacityFilter: this.popupAppHolder.find('#opacity'),
       spanOpacityValue: this.popupAppHolder.find('#opacity-value'),
       holderMedia: this.popupAppHolder.find('.holder-media'),
-      overlay: this.popupAppHolder.find()
+      overlay: this.popupAppHolder.find(),
+      btnMinimize: this.popupAppHolder.find('.btn.minimize')
     };
     this.mediaLastId = -1;
     this.selectedMediaId = -1;
 
+    this.views.holderControls.draggable();
     //listen for eventsreally
     this.views.inputFile.change(this.fileChange.bind(this));
     this.views.inputOpacityFilter.on('input', this.opacityValueChanged.bind(this));
+    this.views.btnMinimize.click((e)=> {
+      this.views.holderControls.addClass('minimized');
+      e.preventDefault();
+      e.stopPropagation();
+      this.popupAppHolder.one('click', (e)=> {
+        console.log('click', e.target, this.views.holderControls);
+        this.views.holderControls.removeClass('minimized');
+      });
+    });
+
+
   }
 
   fileChange(event) {
@@ -37,6 +50,7 @@ class Popup {
         image.src = e.target.result;
         image.id = 'media-' + (++this.mediaLastId);
         this.selectedMediaId = image.id;
+        this.views.holderMedia.empty();
         this.views.holderMedia.append(image);
         this.getSelectedMedia().css({
           'z-index': this.selectedMediaId

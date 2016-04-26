@@ -6,18 +6,20 @@
 }
 
 div#popup-app {
-  z-index: 99999999999999999;
-  position: relative;
-  transition: .3s ease-in;
+  /*z-index: 99999999999999999;
+  position: fixed;
   transform: scale(0.7) translateY(50px);
-  transform-origin: center;
-  opacity:0;
+  transform-origin: center;*/
+  transition: .3s ease-in;
+  opacity: 0;
+  pointer-events: none;
 }
 
 div#popup-app.show {
-  transform: scale(1) translateY(0px);
+  /*transform: scale(1) translateY(0px);*/
   transform-origin: center;
-  opacity:1;
+  pointer-events: initial;
+  opacity: 1;
 }
 
 .holder-controls {
@@ -28,16 +30,51 @@ div#popup-app.show {
   top: 20px;
   right: 20px;
   z-index: 9999999999;
-  opacity:0;
-  transition: .2s cubic-bezier(0.8, 0, 0.28, 1.04);
+  max-height: 500px;
+  max-width: 500px;
+  opacity: 0;
+  transition: opacity, max-height, max-width .2s cubic-bezier(0.8, 0, 0.28, 1.04);
 }
 
 .holder-controls.show {
-  opacity:1
+  opacity: 1
 }
-.holder-media>* {
+
+.holder-media > * {
   position: absolute;
   top: 0;
   left: 0;
   display: block;
+  pointer-events: none;
+}
+
+.holder-controls.ui-draggable.ui-draggable-handle.show.minimized {
+  overflow: hidden;
+  max-width: 50px !important;
+  max-height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  font-size: 20px;
+}
+
+.holder-controls.ui-draggable.ui-draggable-handle.show.minimized::after {
+  content: "mO";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+button.btn.minimize {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+  background: none;
+  font-size: 41px;
+  font-weight: bold;
 }

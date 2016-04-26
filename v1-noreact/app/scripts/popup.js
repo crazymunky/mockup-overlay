@@ -12,6 +12,8 @@ console.log('jquery loaded?', $);
 
 var Popup = function () {
   function Popup() {
+    var _this = this;
+
     _classCallCheck(this, Popup);
 
     console.log('Popup constructor');
@@ -22,20 +24,31 @@ var Popup = function () {
       inputOpacityFilter: this.popupAppHolder.find('#opacity'),
       spanOpacityValue: this.popupAppHolder.find('#opacity-value'),
       holderMedia: this.popupAppHolder.find('.holder-media'),
-      overlay: this.popupAppHolder.find()
+      overlay: this.popupAppHolder.find(),
+      btnMinimize: this.popupAppHolder.find('.btn.minimize')
     };
     this.mediaLastId = -1;
     this.selectedMediaId = -1;
 
+    this.views.holderControls.draggable();
     //listen for eventsreally
     this.views.inputFile.change(this.fileChange.bind(this));
     this.views.inputOpacityFilter.on('input', this.opacityValueChanged.bind(this));
+    this.views.btnMinimize.click(function (e) {
+      _this.views.holderControls.addClass('minimized');
+      e.preventDefault();
+      e.stopPropagation();
+      _this.popupAppHolder.one('click', function (e) {
+        console.log('click', e.target, _this.views.holderControls);
+        _this.views.holderControls.removeClass('minimized');
+      });
+    });
   }
 
   _createClass(Popup, [{
     key: 'fileChange',
     value: function fileChange(event) {
-      var _this = this;
+      var _this2 = this;
 
       var myFile = this.views.inputFile.prop('files');
       console.log('get the file', myFile);
@@ -46,11 +59,12 @@ var Popup = function () {
         reader.onload = function (e) {
           var image = new Image();
           image.src = e.target.result;
-          image.id = 'media-' + ++_this.mediaLastId;
-          _this.selectedMediaId = image.id;
-          _this.views.holderMedia.append(image);
-          _this.getSelectedMedia().css({
-            'z-index': _this.selectedMediaId
+          image.id = 'media-' + ++_this2.mediaLastId;
+          _this2.selectedMediaId = image.id;
+          _this2.views.holderMedia.empty();
+          _this2.views.holderMedia.append(image);
+          _this2.getSelectedMedia().css({
+            'z-index': _this2.selectedMediaId
           });
         };
         reader.readAsDataURL(file);
