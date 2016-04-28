@@ -23,17 +23,15 @@ div#popup-app.show {
 }
 
 .holder-controls {
-  background: black;
+/ / background: black;
   color: white;
   padding: 20px;
   position: fixed;
   top: 20px;
   right: 20px;
   z-index: 9999999999;
-  max-height: 500px;
-  max-width: 500px;
   opacity: 0;
-  transition: opacity, max-height, max-width .2s cubic-bezier(0.8, 0, 0.28, 1.04);
+  transition: opacity .2s cubic-bezier(0.8, 0, 0.28, 1.04);
 }
 
 .holder-controls.show {
@@ -48,18 +46,16 @@ div#popup-app.show {
   pointer-events: none;
 }
 
-.holder-controls.ui-draggable.ui-draggable-handle.show.minimized {
-  overflow: hidden;
-  max-width: 50px !important;
-  max-height: 50px;
-  border-radius: 50%;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 50px;
-  font-size: 20px;
+.holder-controls > *:not(.circle-bg) {
+  opacity: 1;
+  transition: opacity .3s;
 }
 
-.holder-controls.ui-draggable.ui-draggable-handle.show.minimized::after {
+.holder-controls.minimized > *:not(.circle-bg) {
+  opacity: 0;
+}
+
+/*.holder-controls.ui-draggable.ui-draggable-handle.show.minimized::after {
   content: "mO";
   display: block;
   width: 100%;
@@ -68,7 +64,7 @@ div#popup-app.show {
   position: absolute;
   top: 0;
   left: 0;
-}
+}*/
 
 button.btn.minimize {
   position: absolute;
@@ -77,4 +73,35 @@ button.btn.minimize {
   background: none;
   font-size: 41px;
   font-weight: bold;
+}
+
+.circle-bg {
+  background: black;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(10);
+  border-radius: 50%;
+  transition: .3s;
+  z-index: -1;
+}
+
+.show.minimized .circle-bg {
+  transform: translate(-50%, -50%);
+}
+
+.holder-controls.ui-draggable.ui-draggable-handle.show {
+  position: absolute;
+  overflow: hidden;
+  background: transparent;
+  max-width: 500px !important;
+  max-height: 500px !important;
+}
+.holder-controls.ui-draggable.ui-draggable-handle.show::after {content: "mO";display: block;top: 50%;left: 50%;opacity: 0;position: absolute;transform: translate(-50%,-50%);transition: .5s;}
+
+.holder-controls.ui-draggable.ui-draggable-handle.show.minimized::after {
+  opacity: 1;
+  transition-delay: .2s;
 }
