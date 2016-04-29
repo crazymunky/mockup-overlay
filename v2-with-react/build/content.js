@@ -61,9 +61,11 @@
 
 	var _reactRedux = __webpack_require__(160);
 
-	var _reactChromeRedux = __webpack_require__(186);
+	var _reactChromeRedux = __webpack_require__(182);
 
-	var _App = __webpack_require__(224);
+	var _actions = __webpack_require__(219);
+
+	var _App = __webpack_require__(220);
 
 	var _App2 = _interopRequireDefault(_App);
 
@@ -73,16 +75,25 @@
 	    portName: 'MY_APP' // communication port name
 	});
 
-	var anchor = document.createElement('div');
-	anchor.id = 'mockup-overlay';
+	console.log("initial state", store.getState());
+	store.subscribe(function () {
+	    console.log("state change", store.getState());
+	    store.dispatch((0, _actions.toggleControls)());
+	    store.dispatch((0, _actions.addMedia)("NEW MEDIA FILE"));
+	});
+	var unsuscribe = store.subscribe(function () {
+	    unsuscribe();
 
-	document.body.insertBefore(anchor, document.body.childNodes[0]);
+	    var anchor = document.createElement('div');
 
-	(0, _reactDom.render)(_react2.default.createElement(
-	    _reactRedux.Provider,
-	    { store: store },
-	    _react2.default.createElement(_App2.default, null)
-	), document.getElementById('mockup-overlay'));
+	    anchor.id = 'mockup-overlay';
+	    document.body.insertBefore(anchor, document.body.childNodes[0]);
+	    (0, _reactDom.render)(_react2.default.createElement(
+	        _reactRedux.Provider,
+	        { store: store },
+	        _react2.default.createElement(_App2.default, null)
+	    ), document.getElementById('mockup-overlay'));
+	});
 
 /***/ },
 /* 2 */
@@ -19869,15 +19880,15 @@
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _isPlainObject = __webpack_require__(180);
+	var _isPlainObject = __webpack_require__(169);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _hoistNonReactStatics = __webpack_require__(184);
+	var _hoistNonReactStatics = __webpack_require__(180);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
-	var _invariant = __webpack_require__(185);
+	var _invariant = __webpack_require__(181);
 
 	var _invariant2 = _interopRequireDefault(_invariant);
 
@@ -20789,11 +20800,7 @@
 			if (Symbol.observable) {
 				result = Symbol.observable;
 			} else {
-				if (typeof Symbol['for'] === 'function') {
-					result = Symbol['for']('observable');
-				} else {
-					result = Symbol('observable');
-				}
+				result = Symbol('observable');
 				Symbol.observable = result;
 			}
 		} else {
@@ -21133,164 +21140,6 @@
 
 /***/ },
 /* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var getPrototype = __webpack_require__(181),
-	    isHostObject = __webpack_require__(182),
-	    isObjectLike = __webpack_require__(183);
-
-	/** `Object#toString` result references. */
-	var objectTag = '[object Object]';
-
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = Function.prototype.toString;
-
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-
-	/** Used to infer the `Object` constructor. */
-	var objectCtorString = funcToString.call(Object);
-
-	/**
-	 * Used to resolve the
-	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objectToString = objectProto.toString;
-
-	/**
-	 * Checks if `value` is a plain object, that is, an object created by the
-	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.8.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a plain object,
-	 *  else `false`.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 * }
-	 *
-	 * _.isPlainObject(new Foo);
-	 * // => false
-	 *
-	 * _.isPlainObject([1, 2, 3]);
-	 * // => false
-	 *
-	 * _.isPlainObject({ 'x': 0, 'y': 0 });
-	 * // => true
-	 *
-	 * _.isPlainObject(Object.create(null));
-	 * // => true
-	 */
-	function isPlainObject(value) {
-	  if (!isObjectLike(value) ||
-	      objectToString.call(value) != objectTag || isHostObject(value)) {
-	    return false;
-	  }
-	  var proto = getPrototype(value);
-	  if (proto === null) {
-	    return true;
-	  }
-	  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-	  return (typeof Ctor == 'function' &&
-	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
-	}
-
-	module.exports = isPlainObject;
-
-
-/***/ },
-/* 181 */
-/***/ function(module, exports) {
-
-	/* Built-in method references for those with the same name as other `lodash` methods. */
-	var nativeGetPrototype = Object.getPrototypeOf;
-
-	/**
-	 * Gets the `[[Prototype]]` of `value`.
-	 *
-	 * @private
-	 * @param {*} value The value to query.
-	 * @returns {null|Object} Returns the `[[Prototype]]`.
-	 */
-	function getPrototype(value) {
-	  return nativeGetPrototype(Object(value));
-	}
-
-	module.exports = getPrototype;
-
-
-/***/ },
-/* 182 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is a host object in IE < 9.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
-	 */
-	function isHostObject(value) {
-	  // Many host objects are `Object` objects that can coerce to strings
-	  // despite having improperly defined `toString` methods.
-	  var result = false;
-	  if (value != null && typeof value.toString != 'function') {
-	    try {
-	      result = !!(value + '');
-	    } catch (e) {}
-	  }
-	  return result;
-	}
-
-	module.exports = isHostObject;
-
-
-/***/ },
-/* 183 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is object-like. A value is object-like if it's not `null`
-	 * and has a `typeof` result of "object".
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 4.0.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 * @example
-	 *
-	 * _.isObjectLike({});
-	 * // => true
-	 *
-	 * _.isObjectLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObjectLike(_.noop);
-	 * // => false
-	 *
-	 * _.isObjectLike(null);
-	 * // => false
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-
-	module.exports = isObjectLike;
-
-
-/***/ },
-/* 184 */
 /***/ function(module, exports) {
 
 	/**
@@ -21336,7 +21185,7 @@
 
 
 /***/ },
-/* 185 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -21394,7 +21243,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
-/* 186 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21404,15 +21253,15 @@
 	});
 	exports.alias = exports.wrapStore = exports.Store = undefined;
 
-	var _Store = __webpack_require__(187);
+	var _Store = __webpack_require__(183);
 
 	var _Store2 = _interopRequireDefault(_Store);
 
-	var _wrapStore = __webpack_require__(222);
+	var _wrapStore = __webpack_require__(217);
 
 	var _wrapStore2 = _interopRequireDefault(_wrapStore);
 
-	var _alias = __webpack_require__(223);
+	var _alias = __webpack_require__(218);
 
 	var _alias2 = _interopRequireDefault(_alias);
 
@@ -21423,7 +21272,7 @@
 	exports.alias = _alias2.default;
 
 /***/ },
-/* 187 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21434,11 +21283,11 @@
 	  value: true
 	});
 
-	var _assignIn = __webpack_require__(188);
+	var _assignIn = __webpack_require__(184);
 
 	var _assignIn2 = _interopRequireDefault(_assignIn);
 
-	var _constants = __webpack_require__(221);
+	var _constants = __webpack_require__(216);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21521,15 +21370,15 @@
 	exports.default = Store;
 
 /***/ },
-/* 188 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignValue = __webpack_require__(189),
-	    copyObject = __webpack_require__(191),
-	    createAssigner = __webpack_require__(192),
-	    isArrayLike = __webpack_require__(194),
-	    isPrototype = __webpack_require__(207),
-	    keysIn = __webpack_require__(208);
+	var assignValue = __webpack_require__(185),
+	    copyObject = __webpack_require__(187),
+	    createAssigner = __webpack_require__(188),
+	    isArrayLike = __webpack_require__(190),
+	    isPrototype = __webpack_require__(202),
+	    keysIn = __webpack_require__(203);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -21584,10 +21433,10 @@
 
 
 /***/ },
-/* 189 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(190);
+	var eq = __webpack_require__(186);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -21617,7 +21466,7 @@
 
 
 /***/ },
-/* 190 */
+/* 186 */
 /***/ function(module, exports) {
 
 	/**
@@ -21660,10 +21509,10 @@
 
 
 /***/ },
-/* 191 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignValue = __webpack_require__(189);
+	var assignValue = __webpack_require__(185);
 
 	/**
 	 * Copies properties of `source` to `object`.
@@ -21697,11 +21546,11 @@
 
 
 /***/ },
-/* 192 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isIterateeCall = __webpack_require__(193),
-	    rest = __webpack_require__(201);
+	var isIterateeCall = __webpack_require__(189),
+	    rest = __webpack_require__(197);
 
 	/**
 	 * Creates a function like `_.assign`.
@@ -21740,13 +21589,13 @@
 
 
 /***/ },
-/* 193 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(190),
-	    isArrayLike = __webpack_require__(194),
-	    isIndex = __webpack_require__(200),
-	    isObject = __webpack_require__(198);
+	var eq = __webpack_require__(186),
+	    isArrayLike = __webpack_require__(190),
+	    isIndex = __webpack_require__(196),
+	    isObject = __webpack_require__(194);
 
 	/**
 	 * Checks if the given arguments are from an iteratee call.
@@ -21776,12 +21625,12 @@
 
 
 /***/ },
-/* 194 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(195),
-	    isFunction = __webpack_require__(197),
-	    isLength = __webpack_require__(199);
+	var getLength = __webpack_require__(191),
+	    isFunction = __webpack_require__(193),
+	    isLength = __webpack_require__(195);
 
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
@@ -21816,10 +21665,10 @@
 
 
 /***/ },
-/* 195 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseProperty = __webpack_require__(196);
+	var baseProperty = __webpack_require__(192);
 
 	/**
 	 * Gets the "length" property value of `object`.
@@ -21838,7 +21687,7 @@
 
 
 /***/ },
-/* 196 */
+/* 192 */
 /***/ function(module, exports) {
 
 	/**
@@ -21858,10 +21707,10 @@
 
 
 /***/ },
-/* 197 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(198);
+	var isObject = __webpack_require__(194);
 
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]',
@@ -21907,7 +21756,7 @@
 
 
 /***/ },
-/* 198 */
+/* 194 */
 /***/ function(module, exports) {
 
 	/**
@@ -21944,7 +21793,7 @@
 
 
 /***/ },
-/* 199 */
+/* 195 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -21986,7 +21835,7 @@
 
 
 /***/ },
-/* 200 */
+/* 196 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -22013,11 +21862,11 @@
 
 
 /***/ },
-/* 201 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var apply = __webpack_require__(202),
-	    toInteger = __webpack_require__(203);
+	var apply = __webpack_require__(198),
+	    toInteger = __webpack_require__(199);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -22083,7 +21932,7 @@
 
 
 /***/ },
-/* 202 */
+/* 198 */
 /***/ function(module, exports) {
 
 	/**
@@ -22111,10 +21960,10 @@
 
 
 /***/ },
-/* 203 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toNumber = __webpack_require__(204);
+	var toNumber = __webpack_require__(200);
 
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0,
@@ -22163,12 +22012,12 @@
 
 
 /***/ },
-/* 204 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(197),
-	    isObject = __webpack_require__(198),
-	    isSymbol = __webpack_require__(205);
+	var isFunction = __webpack_require__(193),
+	    isObject = __webpack_require__(194),
+	    isSymbol = __webpack_require__(201);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -22236,10 +22085,10 @@
 
 
 /***/ },
-/* 205 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(206);
+	var isObjectLike = __webpack_require__(172);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -22281,42 +22130,7 @@
 
 
 /***/ },
-/* 206 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is object-like. A value is object-like if it's not `null`
-	 * and has a `typeof` result of "object".
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 4.0.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 * @example
-	 *
-	 * _.isObjectLike({});
-	 * // => true
-	 *
-	 * _.isObjectLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObjectLike(_.noop);
-	 * // => false
-	 *
-	 * _.isObjectLike(null);
-	 * // => false
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-
-	module.exports = isObjectLike;
-
-
-/***/ },
-/* 207 */
+/* 202 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -22340,13 +22154,13 @@
 
 
 /***/ },
-/* 208 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseKeysIn = __webpack_require__(209),
-	    indexKeys = __webpack_require__(215),
-	    isIndex = __webpack_require__(200),
-	    isPrototype = __webpack_require__(207);
+	var baseKeysIn = __webpack_require__(204),
+	    indexKeys = __webpack_require__(210),
+	    isIndex = __webpack_require__(196),
+	    isPrototype = __webpack_require__(202);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -22401,11 +22215,11 @@
 
 
 /***/ },
-/* 209 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Reflect = __webpack_require__(210),
-	    iteratorToArray = __webpack_require__(214);
+	var Reflect = __webpack_require__(205),
+	    iteratorToArray = __webpack_require__(209);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -22443,10 +22257,10 @@
 
 
 /***/ },
-/* 210 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(211);
+	var root = __webpack_require__(206);
 
 	/** Built-in value references. */
 	var Reflect = root.Reflect;
@@ -22455,10 +22269,10 @@
 
 
 /***/ },
-/* 211 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module, global) {var checkGlobal = __webpack_require__(213);
+	/* WEBPACK VAR INJECTION */(function(module, global) {var checkGlobal = __webpack_require__(208);
 
 	/** Used to determine if values are of the language type `Object`. */
 	var objectTypes = {
@@ -22500,10 +22314,10 @@
 
 	module.exports = root;
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(212)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(207)(module), (function() { return this; }())))
 
 /***/ },
-/* 212 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -22519,7 +22333,7 @@
 
 
 /***/ },
-/* 213 */
+/* 208 */
 /***/ function(module, exports) {
 
 	/**
@@ -22537,7 +22351,7 @@
 
 
 /***/ },
-/* 214 */
+/* 209 */
 /***/ function(module, exports) {
 
 	/**
@@ -22561,14 +22375,14 @@
 
 
 /***/ },
-/* 215 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseTimes = __webpack_require__(216),
-	    isArguments = __webpack_require__(217),
-	    isArray = __webpack_require__(219),
-	    isLength = __webpack_require__(199),
-	    isString = __webpack_require__(220);
+	var baseTimes = __webpack_require__(211),
+	    isArguments = __webpack_require__(212),
+	    isArray = __webpack_require__(214),
+	    isLength = __webpack_require__(195),
+	    isString = __webpack_require__(215);
 
 	/**
 	 * Creates an array of index keys for `object` values of arrays,
@@ -22591,7 +22405,7 @@
 
 
 /***/ },
-/* 216 */
+/* 211 */
 /***/ function(module, exports) {
 
 	/**
@@ -22617,10 +22431,10 @@
 
 
 /***/ },
-/* 217 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLikeObject = __webpack_require__(218);
+	var isArrayLikeObject = __webpack_require__(213);
 
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
@@ -22669,11 +22483,11 @@
 
 
 /***/ },
-/* 218 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(194),
-	    isObjectLike = __webpack_require__(206);
+	var isArrayLike = __webpack_require__(190),
+	    isObjectLike = __webpack_require__(172);
 
 	/**
 	 * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -22708,7 +22522,7 @@
 
 
 /***/ },
-/* 219 */
+/* 214 */
 /***/ function(module, exports) {
 
 	/**
@@ -22742,11 +22556,11 @@
 
 
 /***/ },
-/* 220 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(219),
-	    isObjectLike = __webpack_require__(206);
+	var isArray = __webpack_require__(214),
+	    isObjectLike = __webpack_require__(172);
 
 	/** `Object#toString` result references. */
 	var stringTag = '[object String]';
@@ -22788,7 +22602,7 @@
 
 
 /***/ },
-/* 221 */
+/* 216 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22800,7 +22614,7 @@
 	var STATE_TYPE = exports.STATE_TYPE = 'chromex.state';
 
 /***/ },
-/* 222 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22809,7 +22623,7 @@
 	  value: true
 	});
 
-	var _constants = __webpack_require__(221);
+	var _constants = __webpack_require__(216);
 
 	/**
 	 * Responder for promisified results
@@ -22879,7 +22693,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 218 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22905,7 +22719,30 @@
 	};
 
 /***/ },
-/* 224 */
+/* 219 */
+/***/ function(module, exports) {
+
+	/**
+	 * Created by MunKy on 4/28/2016.
+	 */
+	export const ADD_MEDIA = 'ADD_MEDIA';
+	export const TOGGLE_CONTROLS = 'TOGGLE_CONTROLS';
+
+	export function addMedia(media) {
+	    return {
+	        type: ADD_MEDIA,
+	        media
+	    }; 
+	}
+
+	export function toggleControls() {
+	    return {
+	        type: TOGGLE_CONTROLS
+	    };
+	}
+
+/***/ },
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22920,13 +22757,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _MediaCanvas = __webpack_require__(225);
+	var _MediaCanvas = __webpack_require__(221);
 
 	var _MediaCanvas2 = _interopRequireDefault(_MediaCanvas);
 
-	var _OverlayControls = __webpack_require__(226);
+	var _OverlayControls = __webpack_require__(222);
 
 	var _OverlayControls2 = _interopRequireDefault(_OverlayControls);
+
+	var _reactRedux = __webpack_require__(160);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22942,7 +22781,10 @@
 	    function App(props) {
 	        _classCallCheck(this, App);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+
+	        console.log(props);
+	        return _this;
 	    }
 
 	    _createClass(App, [{
@@ -22960,10 +22802,12 @@
 	    return App;
 	}(_react.Component);
 
-	exports.default = App;
+	exports.default = (0, _reactRedux.connect)(function (state) {
+	    return state;
+	})(App);
 
 /***/ },
-/* 225 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23015,10 +22859,10 @@
 	exports.default = MediaCanvas;
 
 /***/ },
-/* 226 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -23051,12 +22895,61 @@
 	    }
 
 	    _createClass(OverlayControls, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                'Overlay controls'
+	                "div",
+	                { className: "holder-controls" },
+	                _react2.default.createElement("div", { className: "clip-bg" }),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "inner-holder" },
+	                    _react2.default.createElement(
+	                        "button",
+	                        { className: "btn minimize" },
+	                        "-"
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "file-selector" },
+	                        _react2.default.createElement(
+	                            "label",
+	                            { "for": "file" },
+	                            "Select your media file"
+	                        ),
+	                        _react2.default.createElement("input", { type: "file", name: "file", id: "file" })
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "holder-media-layers" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "media-layer" },
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "opacity-selector" },
+	                                _react2.default.createElement(
+	                                    "label",
+	                                    { "for": "opacity" },
+	                                    "Set your overlay opacity: ",
+	                                    _react2.default.createElement(
+	                                        "span",
+	                                        {
+	                                            id: "opacity-value" },
+	                                        "100"
+	                                    ),
+	                                    "%"
+	                                ),
+	                                _react2.default.createElement("input", { type: "range", max: "100", min: "0", name: "opacity", id: "opacity", value: "100" })
+	                            ),
+	                            _react2.default.createElement(
+	                                "button",
+	                                { className: "btn remove" },
+	                                "Remove"
+	                            )
+	                        )
+	                    )
+	                )
 	            );
 	        }
 	    }]);

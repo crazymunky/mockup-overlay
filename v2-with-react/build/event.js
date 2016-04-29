@@ -55,15 +55,15 @@
 
 	var _redux = __webpack_require__(2);
 
-	var _reducers = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./reducers\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _reducers = __webpack_require__(16);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
-	var _reactChromeRedux = __webpack_require__(16);
+	var _reactChromeRedux = __webpack_require__(17);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var store = (0, _redux.createStore)(_reducers2.default, {}); // background.js
+	var store = (0, _redux.createStore)(_reducers2.default); // background.js
 
 	(0, _reactChromeRedux.wrapStore)(store, { portName: 'MY_APP' });
 
@@ -666,11 +666,7 @@
 			if (Symbol.observable) {
 				result = Symbol.observable;
 			} else {
-				if (typeof Symbol['for'] === 'function') {
-					result = Symbol['for']('observable');
-				} else {
-					result = Symbol('observable');
-				}
+				result = Symbol('observable');
 				Symbol.observable = result;
 			}
 		} else {
@@ -1010,6 +1006,23 @@
 
 /***/ },
 /* 16 */
+/***/ function(module, exports) {
+
+	/**
+	 * Created by maxit on 4/24/2016.
+	 */
+	import {combineReducers} from 'redux';
+
+	import overlay from './overlay';
+	import app from './app';
+
+	export default combineReducers({
+	    overlay,
+	    app
+	});
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1019,7 +1032,7 @@
 	});
 	exports.alias = exports.wrapStore = exports.Store = undefined;
 
-	var _Store = __webpack_require__(17);
+	var _Store = __webpack_require__(18);
 
 	var _Store2 = _interopRequireDefault(_Store);
 
@@ -1038,7 +1051,7 @@
 	exports.alias = _alias2.default;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1049,7 +1062,7 @@
 	  value: true
 	});
 
-	var _assignIn = __webpack_require__(18);
+	var _assignIn = __webpack_require__(19);
 
 	var _assignIn2 = _interopRequireDefault(_assignIn);
 
@@ -1136,13 +1149,13 @@
 	exports.default = Store;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignValue = __webpack_require__(19),
-	    copyObject = __webpack_require__(21),
-	    createAssigner = __webpack_require__(22),
-	    isArrayLike = __webpack_require__(24),
+	var assignValue = __webpack_require__(20),
+	    copyObject = __webpack_require__(22),
+	    createAssigner = __webpack_require__(23),
+	    isArrayLike = __webpack_require__(25),
 	    isPrototype = __webpack_require__(37),
 	    keysIn = __webpack_require__(38);
 
@@ -1199,10 +1212,10 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(20);
+	var eq = __webpack_require__(21);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -1232,7 +1245,7 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	/**
@@ -1275,10 +1288,10 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignValue = __webpack_require__(19);
+	var assignValue = __webpack_require__(20);
 
 	/**
 	 * Copies properties of `source` to `object`.
@@ -1312,11 +1325,11 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isIterateeCall = __webpack_require__(23),
-	    rest = __webpack_require__(31);
+	var isIterateeCall = __webpack_require__(24),
+	    rest = __webpack_require__(32);
 
 	/**
 	 * Creates a function like `_.assign`.
@@ -1355,13 +1368,13 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(20),
-	    isArrayLike = __webpack_require__(24),
-	    isIndex = __webpack_require__(30),
-	    isObject = __webpack_require__(28);
+	var eq = __webpack_require__(21),
+	    isArrayLike = __webpack_require__(25),
+	    isIndex = __webpack_require__(31),
+	    isObject = __webpack_require__(29);
 
 	/**
 	 * Checks if the given arguments are from an iteratee call.
@@ -1391,12 +1404,12 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getLength = __webpack_require__(25),
-	    isFunction = __webpack_require__(27),
-	    isLength = __webpack_require__(29);
+	var getLength = __webpack_require__(26),
+	    isFunction = __webpack_require__(28),
+	    isLength = __webpack_require__(30);
 
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
@@ -1431,10 +1444,10 @@
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseProperty = __webpack_require__(26);
+	var baseProperty = __webpack_require__(27);
 
 	/**
 	 * Gets the "length" property value of `object`.
@@ -1453,7 +1466,7 @@
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
 	/**
@@ -1473,10 +1486,10 @@
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(28);
+	var isObject = __webpack_require__(29);
 
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]',
@@ -1522,7 +1535,7 @@
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	/**
@@ -1559,7 +1572,7 @@
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -1601,7 +1614,7 @@
 
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -1628,11 +1641,11 @@
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var apply = __webpack_require__(32),
-	    toInteger = __webpack_require__(33);
+	var apply = __webpack_require__(33),
+	    toInteger = __webpack_require__(34);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -1698,7 +1711,7 @@
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports) {
 
 	/**
@@ -1726,10 +1739,10 @@
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toNumber = __webpack_require__(34);
+	var toNumber = __webpack_require__(35);
 
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0,
@@ -1778,12 +1791,12 @@
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(27),
-	    isObject = __webpack_require__(28),
-	    isSymbol = __webpack_require__(35);
+	var isFunction = __webpack_require__(28),
+	    isObject = __webpack_require__(29),
+	    isSymbol = __webpack_require__(36);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -1851,10 +1864,10 @@
 
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(36);
+	var isObjectLike = __webpack_require__(8);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -1896,41 +1909,6 @@
 
 
 /***/ },
-/* 36 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is object-like. A value is object-like if it's not `null`
-	 * and has a `typeof` result of "object".
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 4.0.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-	 * @example
-	 *
-	 * _.isObjectLike({});
-	 * // => true
-	 *
-	 * _.isObjectLike([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObjectLike(_.noop);
-	 * // => false
-	 *
-	 * _.isObjectLike(null);
-	 * // => false
-	 */
-	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
-	}
-
-	module.exports = isObjectLike;
-
-
-/***/ },
 /* 37 */
 /***/ function(module, exports) {
 
@@ -1960,7 +1938,7 @@
 
 	var baseKeysIn = __webpack_require__(39),
 	    indexKeys = __webpack_require__(45),
-	    isIndex = __webpack_require__(30),
+	    isIndex = __webpack_require__(31),
 	    isPrototype = __webpack_require__(37);
 
 	/** Used for built-in method references. */
@@ -2182,7 +2160,7 @@
 	var baseTimes = __webpack_require__(46),
 	    isArguments = __webpack_require__(47),
 	    isArray = __webpack_require__(49),
-	    isLength = __webpack_require__(29),
+	    isLength = __webpack_require__(30),
 	    isString = __webpack_require__(50);
 
 	/**
@@ -2287,8 +2265,8 @@
 /* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(24),
-	    isObjectLike = __webpack_require__(36);
+	var isArrayLike = __webpack_require__(25),
+	    isObjectLike = __webpack_require__(8);
 
 	/**
 	 * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -2361,7 +2339,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArray = __webpack_require__(49),
-	    isObjectLike = __webpack_require__(36);
+	    isObjectLike = __webpack_require__(8);
 
 	/** `Object#toString` result references. */
 	var stringTag = '[object String]';
